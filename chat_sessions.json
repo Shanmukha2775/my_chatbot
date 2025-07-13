@@ -1,0 +1,21 @@
+[
+  {
+    "session_id": "chat1",
+    "title": "My Chat 1",
+    "messages": []
+  },
+  {
+    "session_id": "chat2",
+    "title": "My Chat 2",
+    "messages": [
+      {
+        "user": "Hi",
+        "bot": "Hi there! How can I help you today?"
+      },
+      {
+        "user": "Tell me about python in simple words",
+        "bot": "Imagine you want to tell a computer to do something, step by step. Computers don't understand regular English, so you need a special language to give them instructions.\n\n**Python is like a special, easy-to-understand language you use to talk to computers.**\n\nHere's why it's special in simple words:\n\n1.  **Like Clear Instructions:** Think of it like writing a recipe. Python is designed to be very **easy to read and write**, almost like regular English. This means it's simpler to learn than many other computer languages.\n\n2.  **It's a \"Do-Anything\" Language:** Python is incredibly **versatile**. You can use it to:\n    *   Build **websites** (like parts of Instagram or Spotify).\n    *   Create **games**.\n    *   Analyze huge amounts of **data** (like figuring out trends).\n    *   Power **artificial intelligence** and machine learning (think smart assistants).\n    *   Automate **boring tasks** on your computer (like organizing files).\n    *   And much, much more!\n\n3.  **Beginner-Friendly:** Because it's easy to read, it's often recommended as the **first language** for people learning to code.\n\n4.  **Lots of Tools (Like Pre-made Ingredients):** Python has a huge collection of \"libraries\" or \"modules,\" which are like pre-written chunks of code that do specific things. This means you don't have to build everything from scratch \u2013 you can just use existing tools to get your job done faster.\n\nSo, in short:\n\n**Python is your friendly, powerful language that lets you tell computers what to do, making them incredibly useful tools for almost anything you can imagine, from building apps to analyzing data.**"
+      }
+    ]
+  }
+]

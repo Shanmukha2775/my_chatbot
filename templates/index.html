@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shanmukha's Chatbot with Recents</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body onload="startNewChat()">
+
+  <div class="menu-icon" onclick="toggleRecents()">☰</div>
+
+  <div class="recents-panel" id="recents-panel" style="display:none;">
+    <h3>Recents</h3>
+    <ul id="recents-list"></ul>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      🤖 Welcome to <strong>Shanmukha's Chatbot</strong><br>Ask me anything!
+    </div>
+
+    <div class="chat-box" id="chat-box"></div>
+
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Type your question..."/>
+      <button class="send-btn" onclick="sendMessage()">Send</button>
+      <button class="clear-btn" onclick="startNewChat()">New Chat</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSession = "";
+
+    function toggleRecents() {
+      const panel = document.getElementById("recents-panel");
+      panel.style.display = panel.style.display === "none" ? "block" : "none";
+      loadRecents();
+    }
+
+    function loadRecents() {
+      fetch("/recents")
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById("recents-list");
+          list.innerHTML = "";
+          data.forEach(session => {
+            list.innerHTML += `<li onclick="loadSession('${session.session_id}')">${session.title}</li>`;
+          });
+        });
+    }
+
+    function startNewChat() {
+      fetch("/new_chat", { method: "POST" })
+        .then(res => res.json())
+        .then(data => {
+          currentSession = data.session_id;
+          document.getElementById("chat-box").innerHTML = "";
+        });
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("user-input");
+      const message = input.value.trim();
+      if (!message) return;
+
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML += `<div class="chat-bubble user">🧍‍♀️ You: ${message}</div>`;
+      input.value = "";
+
+      fetch("/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, session_id: currentSession })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const reply = data.reply.replace(/\n/g, "<br>• ");
+        chatBox.innerHTML += `<div class="chat-bubble bot">🤖 Bot:<br>• ${reply}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+
+    function loadSession(sessionId) {
+      currentSession = sessionId;
+      document.getElementById("chat-box").innerHTML = "";
+      fetch("/load_session/" + sessionId)
+        .then(res => res.json())
+        .then(data => {
+          const chatBox = document.getElementById("chat-box");
+          data.forEach(item => {
+            chatBox.innerHTML += `<div class="chat-bubble user">🧍‍♀️ You: ${item.user}</div>`;
+            chatBox.innerHTML += `<div class="chat-bubble bot">🤖 Bot:<br>• ${item.bot.replace(/\n/g, "<br>• ")}</div>`;
+          });
+          chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    }
+  </script>
+
+</body>
+</html>
